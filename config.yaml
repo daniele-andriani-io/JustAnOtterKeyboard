@@ -1,0 +1,388 @@
+meta:
+  author: Daniele Andriani
+  version: "v5"
+  engin: 4.1.0
+units:
+  kx: cx
+  ky: cy
+  px: kx+6
+  py: ky+6
+points:
+  key:
+    padding: ky+2.5
+    spread: kx+2.5
+  zones:
+    left:
+      anchor: 
+        shift: [100,-100]
+      rows:
+        bottom:
+          row_net: LP09
+          mirror:
+            row_net: RP09
+        home:
+          row_net: LP08
+          mirror:
+            row_net: RP08
+        top:
+          row_net: LP07
+          mirror:
+            row_net: RP07
+      columns:
+        outer:
+          key:
+            column_net: LP01
+            mirror:
+              column_net: RP01
+        pinky:
+          key:
+            spread: kx+1
+            column_net: LP02
+            mirror:
+              column_net: RP02
+        ring:
+          key:
+            spread: kx+4
+            stagger: 14
+            column_net: LP03
+            mirror:
+              column_net: RP03
+        middle:
+          key:
+            spread: kx+4
+            stagger: 4
+            column_net: LP04
+            mirror:
+              column_net: RP04
+        index:
+          key:
+            stagger: -4
+            column_net: LP05
+            mirror:
+              column_net: RP05
+        inner:
+          key:
+            spread: kx+1
+            stagger: -4
+            column_net: LP06
+            mirror:
+              column_net: RP06
+    thumb:
+      anchor:
+        ref: left_middle_bottom
+        shift: [0, -cy-1.5]
+      rows:
+        unique:
+          row_net: LP10
+          mirror:
+            row_net: RP10
+      columns:
+        extended:
+          key:
+            column_net: LP03
+            mirror:
+              column_net: RP03
+        inner:
+          key:
+            stagger: -4
+            column_net: LP04
+            mirror:
+              column_net: RP04
+        middle:
+          key:
+            shift: [8, -5]
+            splay: -30
+            column_net: LP05
+            mirror:
+              column_net: RP05
+        outer:
+          key:
+            shift: [8, -5]
+            column_net: LP06
+            mirror:
+              column_net: RP06
+  mirror: &mirror
+    ref: thumb_outer_unique
+    distance: 60.1
+outlines:
+  raw:
+    - what: rectangle
+      where: true
+      size: [px, py]
+  keys:
+    - what: rectangle
+      where: true
+      size: [kx-0.5,ky-0.5]
+  choc_sockets:
+    - what: rectangle
+      where: true
+      size: [cx-4.25,cy-3.25]
+  left_board:
+    - what: polygon
+      asym: both
+      operation: stack
+      fillet: 2
+      points:
+        - ref: left_outer_top
+          shift: [-px/2, py/2-2]
+        - ref: left_ring_top
+          shift: [-px/2, py/2 +5]
+        - ref: left_middle_top
+          shift: [-px/2, py/2 +5]
+        - ref: left_middle_top
+          shift: [px/2, py/2 +5]
+        - ref: left_inner_top
+          shift: [px/2 - 8, py/2 +13]
+        - ref: left_inner_top
+          shift: [px/2 - 8, py/2 +5]
+        - ref: left_inner_top
+          shift: [px/2 - 3, py/2 +5]
+        - ref: left_inner_top
+          shift: [px/2 - 3, py/2 +13]
+        - ref: left_inner_bottom
+          shift: [cx+14+px/2, 2ky+py/2 +18]
+        - ref: left_inner_bottom
+          shift: [cx+14+px/2, -ky/2]
+        - ref: thumb_outer_unique
+          shift: [-px/2, py/2 +2]
+        - ref: thumb_outer_unique
+          shift: [px/2, py/2 +2]
+        - ref: thumb_outer_unique
+          shift: [px/2, -py/2]
+        - ref: thumb_inner_unique
+          shift: [kx/2, -py/2-2]
+        - ref: left_outer_bottom
+          shift: [-px/2, -py/2]
+  right_board:
+    - what: polygon
+      asym: both
+      operation: stack
+      fillet: 2
+      points:
+        - ref: mirror_left_outer_top
+          shift: [-px/2, py/2-2]
+        - ref: mirror_left_ring_top
+          shift: [-px/2, py/2 +5]
+        - ref: mirror_left_middle_top
+          shift: [-px/2, py/2 +5]
+        - ref: mirror_left_middle_top
+          shift: [px/2, py/2 +5]
+        - ref: mirror_left_inner_top
+          shift: [px/2 - 8, py/2 +13]
+        - ref: mirror_left_inner_top
+          shift: [px/2 - 8, py/2 +5]
+        - ref: mirror_left_inner_top
+          shift: [px/2 - 3, py/2 +5]
+        - ref: mirror_left_inner_top
+          shift: [px/2 - 3, py/2 +13]
+        - ref: mirror_left_inner_bottom
+          shift: [cx+14+px/2, 2ky+py/2 +18]
+        - ref: mirror_left_inner_bottom
+          shift: [cx+14+px/2, -ky/2]
+        - ref: mirror_thumb_outer_unique
+          shift: [-px/2, py/2 +2]
+        - ref: mirror_thumb_outer_unique
+          shift: [px/2, py/2 +2]
+        - ref: mirror_thumb_outer_unique
+          shift: [px/2, -py/2]
+        - ref: mirror_thumb_inner_unique
+          shift: [kx/2, -py/2-2]
+        - ref: mirror_left_outer_bottom
+          shift: [-px/2, -py/2]
+  combo_left:
+    - name: left_board
+    - operation: subtract
+      name: keys
+  combo_right:
+    - name: right_board
+    - operation: subtract
+      name: keys
+  combo:
+    - name: combo_left
+    - operation: add
+      name: combo_right
+  combo_right_socket:
+    - name: right_board
+    - operation: subtract
+      name: choc_sockets
+pcbs:
+  left:
+    template: kicad8
+    outlines: 
+      left: 
+        outline: left_board
+    footprints:
+      left_choc_hotswap:
+        what: ceoloide/switch_choc_v1_v2
+        where: [/^left_.*/, /^thumb_.*/]
+        params:
+          from: "{{column_net}}"
+          to: "{{colrow}}"
+      left_connector:
+        what: trrs
+        where:
+          ref: left_inner_top
+          shift: [42, 8]
+        params:
+          A: LP21
+          B: LVCC
+          C: LP20
+          D: LGND
+      left_diode:
+        what: diode
+        where: [/^left_.*/, /^thumb_.*/]
+        params:
+          from: "{{colrow}}"
+          to: "{{row_net}}"
+        adjust:
+          shift: [4.5, -5]
+      left_text:
+        what: infused-kim/text
+        where: 
+          ref: thumb_outer_unique
+          shift: [0, ky/2+3]
+        params:
+          text: Just an Otter keyboard
+      left_mcu:
+        what: promicro
+        where:
+          ref: left_inner_top
+          shift: [23, 5]
+          rotate: -90
+        params:
+          orientation: up
+          RAW: LRAW
+          GND: LGND
+          RST: LRST
+          VCC: LVCC
+          P21: LP21
+          P20: LP20
+          P19: LP19
+          P18: LP18
+          P15: LP15
+          P14: LP14
+          P16: LP16
+          P10: LP10
+          P1: LP01
+          P0: LP0
+          P2: LP02
+          P3: LP03
+          P4: LP04
+          P5: LP05
+          P6: LP06
+          P7: LP07
+          P8: LP08
+          P9: LP09
+      left_screen:
+        what: oled
+        where:
+          ref: left_inner_top
+          shift: [17, -20]
+          rotate: 90
+        params:
+          side: "F"
+          VCC: LVCC
+          SDA: LP18
+          SCL: LP19
+          GND: LGND
+      left_knob:
+        what: rotary
+        where:
+          ref: left_inner_bottom
+          shift: [kx+12, 5]
+        params:
+          from: LP15
+          to: LP14
+          A: LP06
+          B: LP05
+          C: LGND
+  right:
+    template: kicad8
+    outlines: 
+      right: 
+        outline: right_board
+    footprints:
+      right_choc_hotswap:
+        what: ceoloide/switch_choc_v1_v2
+        where: [/^mirror_.*/]
+        params:
+          from: "{{column_net}}"
+          to: "{{colrow}}"
+      right_connector:
+        what: trrs
+        where:
+          ref: mirror_left_inner_top
+          shift: [37.5, 8]
+        params:
+          A: RP01
+          B: RVCC
+          C: RP00
+          D: RGND
+      right_diode:
+        what: diode
+        where: [/^mirror_.*/]
+        params:
+          from: "{{colrow}}"
+          to: "{{row_net}}"
+        adjust:
+          shift: [-4.5, -5]
+      right_text:
+        what: infused-kim/text
+        where: 
+          ref: mirror_thumb_outer_unique
+          shift: [0, ky/2+3]
+        params:
+          text: Just an Otter keyboard
+      right_mcu:
+        what: promicro
+        where:
+          ref: mirror_left_inner_top
+          shift: [23, 5]
+          rotate: 90
+        params:
+          orientation: up
+          RAW: RRAW
+          GND: RGND
+          RST: RRST
+          VCC: RVCC
+          P21: RP21
+          P20: RP20
+          P19: RP19
+          P18: RP18
+          P15: RP15
+          P14: RP14
+          P16: RP16
+          P10: RP10
+          P1: RP01
+          P0: RP00
+          P2: RP02
+          P3: RP03
+          P4: RP04
+          P5: RP05
+          P6: RP06
+          P7: RP07
+          P8: RP08
+          P9: RP09
+      right_screen:
+        what: oled
+        where:
+          ref: mirror_left_inner_top
+          shift: [30, -20]
+          rotate: -90
+        params:
+          side: "B"
+          VCC: RVCC
+          SDA: RP02
+          SCL: RP03
+          GND: RGND
+      right_knob:
+        what: rotary
+        where:
+          ref: mirror_left_inner_bottom
+          shift: [kx+12,-5]
+        params:
+          from: RP04
+          to: RP05
+          A: RP06
+          B: RP05
+          C: RGND
